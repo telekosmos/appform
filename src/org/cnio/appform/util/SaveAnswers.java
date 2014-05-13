@@ -1,7 +1,7 @@
 package org.cnio.appform.util;
 
 import org.cnio.appform.entity.*;
-import org.cnio.appform.util.*;
+
 import java.util.*;
 import org.hibernate.*;
 import javax.servlet.http.HttpServletRequest;
@@ -199,7 +199,8 @@ public class SaveAnswers {
 			Integer myIdAns = (Integer)row[14];
 			String ansVal = (String)row[15];
 			Integer idAnsItem = (Integer)row[17];
-// System.out.println (myQuesId+","+myAnsOrd+","+myAnsNum+",("+myIdAns+"->"+ansVal+") for "+idAnsItem);			
+System.out.println (myQuesId+"-"+myAnsNum+"-"+myAnsOrd+": ("+myIdAns+"->"+
+									ansVal+") for "+idAnsItem);			
 
 // QuestionCoords qc = new QuestionCoords (myQuesId, myAnsOrd, myAnsNum);
 			QuestionCoords qc = new QuestionCoords ();
@@ -280,7 +281,7 @@ System.out.println ("saveOrUpdateSectionAnswers init!! :: (tid: "+Thread.current
 			
 // System.out.println("saveOrUpdate: qcAns: " + qcAns.toString());
 // System.out.println ("(tid: "+Thread.currentThread().getId()+") saveOrUpdateSectionAnswers: qcParam: "+qcParam.toString() + " has indexOfAnswer:"+indexOfAnswer);
-			String msg;
+			String msg = null;
 			long writingIni = Calendar.getInstance().getTimeInMillis();
 			long writingEnd = Calendar.getInstance().getTimeInMillis();
 			
@@ -288,7 +289,25 @@ System.out.println ("saveOrUpdateSectionAnswers init!! :: (tid: "+Thread.current
 				QuestionCoords qcAns = listAnswers.get(indexOfAnswer);
 // System.out.println("(tid: "+Thread.currentThread().getId()+") saveOrUpdateSectionAnswers: qcAns: "+qcAns.toString());				
 
-				if (qcAns.ansVal == null) { // Assume there is no answer
+// 1st case: we have the answer on the database but with a null value: 9999 or so is better
+				if (qcAns.ansVal == null && qcAns.idanswer != null && qcParam.ansVal != null) {
+					msg = "saveOrUpdata: swith null value to param answer value: update answer set thevalue='";
+					msg += qcParam.ansVal+"' where "+"idanswer="+qcAns.idanswer;
+
+					formCtrl.updateAnswer(qcAns.idanswer, qcParam.ansVal);
+					writingEnd = Calendar.getInstance().getTimeInMillis();
+				}
+				
+// 2nd case: answer was removed from questionnaire => answer has to be removed from database				
+				else if (qcParam.ansVal == null && qcAns.ansVal != null) {
+					String currentParam = qcParam.questionId+"-"+qcParam.ansNumber+"-"+qcParam.ansOrder;
+					msg = "saveOrUpdate: formCtrl.removeAnswers ("+currentParam+", "+patId+")";
+					
+					formCtrl.removeAnswers(currentParam, patId);
+				}
+				
+// 3rd case: database ansval is null and no match with previous cases				
+				else if (qcAns.ansVal == null) { // Assume there is no answer
 					msg = "saveOrUpdate: formCtrl.saveAnswer(q, pat, ansNumber, ansOrder, ansGroup, paramVal, ansType);";
 					msg = "save answer as an entity object: new Answer(ansVal); ansId = hibSes.save(answer)";
 					msg += "insert into pga  (codpat, cosanswer, codquestion, answer_number, answer_order)";
@@ -304,36 +323,27 @@ System.out.println ("saveOrUpdateSectionAnswers init!! :: (tid: "+Thread.current
 					writingEnd = Calendar.getInstance().getTimeInMillis();
 				}
 				
-// 2nd case: answer was removed from questionnaire => answer has to be removed from database				
-				else if (qcParam.ansVal == null && qcAns.ansVal != null) {
-					String currentParam = qcParam.questionId+"-"+qcParam.ansNumber+"-"+qcParam.ansOrder;
-					msg = "saveOrUpdate: formCtrl.removeAnswers ("+currentParam+", "+patId+")";
-					
-					formCtrl.removeAnswers(currentParam, patId);
-				}
-				
-// 3rd case: values are different => update
+// Last case: values are different => update
 				else if (qcAns.ansVal.compareTo(qcParam.ansVal) != 0) {  
 					msg = "saveOrUpdate: update answer set thevalue='"+qcParam.ansVal+"' where ";
 					msg += "idanswer="+qcAns.idanswer;
 					
-// System.out.println("SaveAnswers: formCtrl.updateAnswer("+qcAns.idanswer+", "+qcParam.ansVal+");");
 					formCtrl.updateAnswer(qcAns.idanswer, qcParam.ansVal);
 					writingEnd = Calendar.getInstance().getTimeInMillis();
 				}
+
 				else
 					msg = "Do nothing: both values are the same";
 				
 // System.out.println ("(tid: "+Thread.currentThread().getId()+") "+msg);
-			}
-			
+			}			
 // there is no answer in the database with the same question coords than 
 // the current question, it means, if current param is q1450-2-3 there is no
 // no question in the database matching with the previous one
 // so, it has to be created			
 			else { 
 				
-System.out.println("(tid: "+Thread.currentThread().getId()+") !! No value for the answer in listOfAnswers and it has to be created into the DB");
+				msg= "NO answer found for the question";
 				Question currentQ = (Question)hibSes.get(Question.class, qcParam.questionId.longValue());
 				List<AnswerItem> answerItems = 
 							HibController.ItemManager.getAnswerTypes4Question(hibSes, currentQ);
@@ -344,10 +354,14 @@ System.out.println("(tid: "+Thread.currentThread().getId()+") !! No value for th
 									qcParam.ansOrder, 0, IntrvFormCtrl.MISSING_ANSWER, 
 									currentAi.getId().intValue());
 			} // EO else no answer in the DB
+			msg = (msg == null)? " - ": msg;
+			System.out.println("SaveAnswers ("+qcParam.questionId+"-"+qcParam.ansNumber+"-"
+					+qcParam.ansOrder+"): "+msg);
 			
  		}// EO while
 		
 		long timeEnd = Calendar.getInstance().getTimeInMillis();
+		
 // System.out.println ("*** Total time elapsed in saving/updating section: "+(timeEnd-timeIni)+" ms ***");
 	}
 	

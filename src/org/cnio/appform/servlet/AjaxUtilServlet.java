@@ -58,6 +58,7 @@ import org.json.simple.JSONObject;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String what = request.getParameter("what");
 		String usrId = request.getParameter("usrid");
+		System.out.println("param what is "+what);
 		String jsonResp = "";
 		List<AppGroup> groups = null;
 		List<Project> prjs = null;
