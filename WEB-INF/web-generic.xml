@@ -20,6 +20,24 @@
 	<context-param>
     <description>Database Username</description>
     <param-name>dbUserName</param-name>
+    <param-value>gcomesana</param-value>
+  </context-param>
+	
+	<context-param>
+    <description>Database Password</description>
+    <param-name>dbPassword</param-name>
+    <param-value>appform</param-value>
+  </context-param>
+	
+	<context-param>
+    <description>Database name</description>
+    <param-name>dbName</param-name>
+    <param-value>appform</param-value>
+  </context-param>
+	<!--
+	<context-param>
+    <description>Database Username</description>
+    <param-name>dbUserName</param-name>
     <param-value>epiquestusr</param-value>
   </context-param>
 	
@@ -34,7 +52,7 @@
     <param-name>dbName</param-name>
     <param-value>epiquestdb</param-value>
   </context-param>
-
+	-->
 
 <!-- FILTER DECLARATION (just before listener declaration) -->
 	<filter>

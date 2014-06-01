@@ -1,6 +1,6 @@
 *\#
 */*~
-**/.svn*
+**/*/.svn
 .DS_Store
 **/*.log*
 *.tmp
