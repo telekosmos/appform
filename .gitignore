@@ -1,0 +1,11 @@
+*\#
+*/*~
+**/.svn*
+.DS_Store
+**/*.log*
+*.tmp
+logs/*
+!.gitkeep
+tmp
+.DS_Store
+**/*.class
