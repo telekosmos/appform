@@ -311,12 +311,12 @@ alert ("goUpdItem: id="+theForm.frmid.value);
  * Emit an ajax call in order to rearrange the sections within the interview
  */	
 	var onRearrange = function (theList, type) {
-		// no rearrange if nothing was moved
+		/* no rearrange if nothing was moved
 		if (itemMove == 0)
 			return
-			
+		*/
 		var postData = "t="+type+"&newOrder=";
-		for (i=0; i<theList.options.length; i++) {
+		for (var i=0; i<theList.options.length; i++) {
 			postData += theList.options[i].value+",";
 		}
 

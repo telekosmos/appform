@@ -14,7 +14,7 @@
 	<context-param>
     <description>Database server name</description>
     <param-name>dbServerName</param-name>
-    <param-value>padme.cnio.es</param-value>
+    <param-value>epi.cnio.es</param-value>
   </context-param>
 
 	<context-param>

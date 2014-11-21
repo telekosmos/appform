@@ -10,15 +10,20 @@
 	<property name="pgt.package.name" value="epibuilder.war" />
 	<property name="cegen.package.name" value="cegenforms.war" />
 	<property name="generic.package.name" value="epiquestdemo.war" />
+  <!--
 	<property name="webapp.dir" value="/usr/local/apache-tomcat-6.0.18/webapps" />
 	<property name="dest.dir" value="/Users/bioinfo/Development/deploy/appform" />
+	-->
+  <property name="webapp.dir" value="/opt/local/share/java/tomcat6/webapps" />
+  <property name="dest.dir" value="./deploy/appform/out" />
 
 	<!-- lib and classes built related dirs -->
 	<property name="build.dir" value="build" />
 	<property name="classes.dir" value="WEB-INF/classes" />
 	<property file="${build.dir}/build.${env.HOSTNAME}" />
 	<property name="lib.dir" value="WEB-INF/lib" />
-	<property name="lib.tomcat.dir" value="/usr/local/apache-tomcat-6.0.18/lib" />
+	<!-- <property name="lib.tomcat.dir" value="/usr/local/apache-tomcat-6.0.18/lib" /> -->
+  <property name="lib.tomcat.dir" value="/opt/local/share/java/tomcat6/lib" />
 
 	<!-- src related dirs -->
 	<property name="src.dir" value="src" />
@@ -752,7 +757,7 @@
 			webxml="${temp.dir.web-inf}/web-pre.xml">
 
 			<zipfileset dir="${temp.dir}/html" prefix="jsp" />
-			<zipfileset dir="${temp.dir}/display" prefix="display" />
+			<!-- <zipfileset dir="${temp.dir}/display" prefix="display" /> -->
 			<zipfileset dir="${temp.dir}/getpass" prefix="getpass" />
 			<zipfileset dir="${temp.dir}/jsp" prefix="jsp" />
 			<zipfileset dir="${temp.dir}/css" prefix="css" />

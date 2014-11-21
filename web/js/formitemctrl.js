@@ -1073,7 +1073,7 @@ var FormItemCtrl = function () {
 	var onRearrange = function (theList, type) {
 		var postData = "t="+type+"&newOrder=";
 		
-		for (i=0; i<theList.options.length; i++) {
+		for (var i=0; i<theList.options.length; i++) {
 			postData += theList.options[i].value+",";
 		}
 

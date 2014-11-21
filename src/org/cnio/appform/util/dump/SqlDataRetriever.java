@@ -126,7 +126,7 @@ System.out.println ("\nSqlDataRetriever => ResultSet query:\n"+sqlqry);
 	
 	private Connection getConnection() throws ClassNotFoundException, SQLException {
     Class.forName("org.postgresql.Driver");
-    String url = "jdbc:postgresql://padme:5432/appform";
+    String url = "jdbc:postgresql://epi.cnio.es:5432/appform";
 
     return DriverManager.getConnection(url, "gcomesana", "appform");
   }

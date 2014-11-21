@@ -146,8 +146,10 @@
 		
 		<init-param>
 			<param-name>urlPassGet</param-name>
-<!--			<param-value>http://gredos:8080/appform/users/getpasswd?digest=</param-value> -->
+      <!--
 			<param-value>http://gredos.cnio.es:8080/appform/users/getpasswd?digest=</param-value>
+			-->
+      <param-value>http://localhost:8080/appform/users/getpasswd?digest=</param-value>
 		</init-param>
 		
 		<init-param>
