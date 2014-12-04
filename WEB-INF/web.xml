@@ -157,7 +157,10 @@
 		
 		<init-param>
 			<param-name>urlPassGet</param-name>
+			<!--
 			<param-value>http://epi.bioinfo.cnio.es/appform/users/getpasswd?digest=</param-value>
+			-->
+			<param-value>http://localhost:8080/appform/users/getpasswd?digest=</param-value>
 		</init-param>
 		
 		<init-param>
